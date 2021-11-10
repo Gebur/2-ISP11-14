@@ -4,7 +4,7 @@
 
 using namespace std;
 short fieldChoise = 1, firstTurnChoise = 1, gameStatus = 0, menuChoise, settingsChoise, gameMode;
-short fieldStatus = 0;
+int fieldStatus = 0;
 int playerXChoise, playerOChoise, turnComp;
 char winner = ' ';
 string textColor, backgroundColor, color;
@@ -113,10 +113,13 @@ void settingsMenu()
 	{
 	case 1:
 		changeColor();
+		break;
 	case 2:
-		changeField();
+		firstTurn();
+		break;
 	case 3:
 		changeField();
+		break;
 	case 4:
 		mainMenu();
 	default:
@@ -1011,16 +1014,17 @@ int main()
 		clearAll();
 		if (gameMode == 1)
 		{
-			while (winner != 'X' & winner != 'O' & fieldStatus == 0)
+			while (winner != 'X' && winner != 'O' && fieldStatus == 0)
 			{
 				clearAll();
 				printField();
 				playerX_Turn();
 				WinnerCheck();
 				gameFieldCheck();
-				if (winner != 'X' & winner != 'O' & fieldStatus == 0)
+				if (winner != 'X' && winner != 'O' && fieldStatus == 0)
 				{
 					clearAll();
+					printField();
 					turnComputer();
 					WinnerCheck();
 					gameFieldCheck();
@@ -1037,7 +1041,7 @@ int main()
 					cout << "You lost\n\n";
 					winner = ' ';
 				}
-				else
+				else if (fieldStatus == 1)
 				{
 					clearAll();
 					cout << "nobody won. draw\n\n";
@@ -1086,7 +1090,48 @@ int main()
 				}
 				gameFieldPurge();
 			}
-		}
+			else if (firstTurnChoise == 2)
+			{
+				while (winner != 'X' && winner != 'O' && fieldStatus == 0)
+				{
+					clearAll();
+					printField();
+					playerO_Turn();
+					WinnerCheck();
+					gameFieldCheck();
+					if (winner != 'X' && winner != 'O' && fieldStatus == 0)
+					{
+						clearAll();
+						printField();
+						playerX_Turn();
+						WinnerCheck();
+						gameFieldCheck();
+					}
+				}
+				if (winner == 'X')
+				{
+					clearAll();
+					printField();
+					cout << "Player X is winner\n\n";
+					winner = ' ';
+				}
+				else if (winner == 'O')
+				{
+					clearAll();
+					printField();
+					cout << "Player O is winner\n\n";
+					winner = ' ';
+				}
+				else
+				{
+					clearAll();
+					printField();
+					cout << "nobody won. draw\n\n";
+					fieldStatus = 0;
+				}
+				gameFieldPurge();
+				}
+			}
 		system("pause");
 		main();
 	case 2:
@@ -1102,5 +1147,4 @@ int main()
 	default: 
 		cout << "placeholder";
 	}
-	return 0;
 }
